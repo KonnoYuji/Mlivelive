@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlivelive", "Vlivelive.csproj", "{33F46EB1-5AA5-73A3-E653-AA5A76A57823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlivelive.Plugins", "Vlivelive.Plugins.csproj", "{DD00C8AF-1686-935A-49D8-94E123F7BDE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlivelive.Editor", "Vlivelive.Editor.csproj", "{A2A1EC09-55E8-8A4C-18DB-56E3B8E5C20E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33F46EB1-5AA5-73A3-E653-AA5A76A57823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33F46EB1-5AA5-73A3-E653-AA5A76A57823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33F46EB1-5AA5-73A3-E653-AA5A76A57823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33F46EB1-5AA5-73A3-E653-AA5A76A57823}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD00C8AF-1686-935A-49D8-94E123F7BDE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD00C8AF-1686-935A-49D8-94E123F7BDE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD00C8AF-1686-935A-49D8-94E123F7BDE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD00C8AF-1686-935A-49D8-94E123F7BDE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2A1EC09-55E8-8A4C-18DB-56E3B8E5C20E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2A1EC09-55E8-8A4C-18DB-56E3B8E5C20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2A1EC09-55E8-8A4C-18DB-56E3B8E5C20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2A1EC09-55E8-8A4C-18DB-56E3B8E5C20E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

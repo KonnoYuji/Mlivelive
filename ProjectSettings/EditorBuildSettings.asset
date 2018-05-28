@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/vlive_live_window.unity
+    guid: 496d946c6a0e553438ceeda0f0271de9
+  - enabled: 0
+    path: Assets/Scenes/vlive_live_VR.unity
+    guid: e56f20a0b6f7dfc429f1426a174564fe
+  - enabled: 0
+    path: Assets/Scenes/vlive_live_OculusGo.unity
+    guid: 6545be36577db2847be4c478a4594e79
+  - enabled: 0
+    path: Assets/Oculus/VR/Scenes/GearVrControllerTest.unity
+    guid: d56af3aeb2176e7459f753c1c2e2dd97
+  - enabled: 1
+    path: Assets/Scenes/vlive_live_MR.unity
+    guid: d70b545ed9a78f944a1f643913ecac19

@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/Scenes/vlive_live_MR.unity
+  isLoaded: 1
+  isActive: 1
