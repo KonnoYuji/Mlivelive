@@ -727,7 +727,17 @@ Prefab:
     - target: {fileID: 114520639824746270, guid: 6130a4df07388bd469cb7aa28be75645,
         type: 2}
       propertyPath: defaultCameraOffset.z
-      value: -4
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114520639824746270, guid: 6130a4df07388bd469cb7aa28be75645,
+        type: 2}
+      propertyPath: defaultCameraOffset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114520639824746270, guid: 6130a4df07388bd469cb7aa28be75645,
+        type: 2}
+      propertyPath: defaultCameraOffset.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6130a4df07388bd469cb7aa28be75645, type: 2}

@@ -183,7 +183,8 @@ public class PhotonManager : Photon.MonoBehaviour {
         }
 
 
-        Camera.main.transform.parent.transform.position = initialPosition + InitialPosManager.Instance.defaultCameraOffset;
+        //Camera.main.transform.parent.transform.position = initialPosition + InitialPosManager.Instance.defaultCameraOffset;
+        Camera.main.transform.parent.transform.position = new Vector3(0.36f, -2.13f, 21.81f);;
    
         playerSelection.SetActive(false);
 
