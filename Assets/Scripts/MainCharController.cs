@@ -12,9 +12,6 @@ public class MainCharController : Photon.MonoBehaviour {
     private PhotonView myView;
 
     private Vector3 currentPos;
-
-    private OculusGoController oculusGoController;
-
     private bool isJumped = false;
 
     private bool isHandUp = false;
@@ -22,81 +19,14 @@ public class MainCharController : Photon.MonoBehaviour {
     [SerializeField]
     private GameObject[] offRenderingParts;
 
+    public bool isMyPlayer = false;
+
     private void Awake()
     {
         if(myView == null)
         {
             myView = GetComponent<PhotonView>();
         }
-        
-        //VRmodeでのコントローラー入力
-#if VRMode
-
-#if UNITY_STANDALONE
-        leftHand = FindObjectOfType<ViveLeftHandController>();
-        rightHand = FindObjectOfType<ViveRightHandController>();
-
-        if (leftHand != null && rightHand != null)
-        {
-            leftHand.TouchPadClicked += () => {
-
-                if (myView.isMine)
-                {
-                    isJumped = !isJumped;
-                    Jump(isJumped);
-                }
-            };
-
-            rightHand.TouchPadClicked += () => {
-
-                if (myView.isMine)
-                {
-                    isHandUp = !isHandUp;
-                    UpHand(isHandUp);
-                }
-            };
-        }
-#elif UNITY_ANDROID
-        oculusGoController = FindObjectOfType<OculusGoController>();
-        oculusGoController.ClickedPad += () =>{
-                if (myView.isMine)
-                {
-                    isJumped = !isJumped;
-                    Jump(isJumped);
-                }
-            };
-        oculusGoController.TouchedPad += () =>  {
-                if (myView.isMine) 
-                {
-                    isHandUp = !isHandUp;
-                    UpHand(isHandUp);
-                }
-            };
-#endif
-
-#else
-        var charUISetting = StandaloneCharUISetting.Instance;
-        charUISetting.RegisterJumpMethod(() =>
-        {
-            if (myView.isMine) 
-            {
-                isJumped = !isJumped;
-                Jump(isJumped);
-            }
-        });
-
-        charUISetting.RegisterUpHandMethod(() =>
-        {
-            if (myView.isMine)
-            {
-                isHandUp = !isHandUp;
-                UpHand(isHandUp);
-            }
-        }
-        );
-
-#endif
-        PhotonManager.Instance.leaveEvent += DestroyMyself;
     }
 
     // Use this for initialization
@@ -157,6 +87,24 @@ public class MainCharController : Photon.MonoBehaviour {
         }
     }
 
+    private void ChangeJumpState()
+    {
+        if (myView.isMine)
+        {
+            isJumped = !isJumped;
+            Jump(isJumped);
+        }
+    }
+
+    private void ChangeHandUpState()
+    {
+        if (myView.isMine)
+        {
+            isHandUp = !isHandUp;
+            UpHand(isHandUp);
+        }
+    }
+
     private void Jump(bool state)
     {
         bool? curentState = myAnim.GetBool("Jump");
@@ -179,9 +127,19 @@ public class MainCharController : Photon.MonoBehaviour {
 
     private void DestroyMyself()
     {
+        if(PhotonManager.Instance.leaveEvent != null)
+        {
+            PhotonManager.Instance.leaveEvent -= DestroyMyself;
+        }
+
         if(myView.isMine)
         {
             PhotonNetwork.Destroy(this.gameObject);
         }
+    }
+
+    private void DetachInputEvent()
+    {
+
     }
 }

@@ -21,6 +21,7 @@ public class InitialPosManager : MonoBehaviour {
 
     static private Dictionary<PhotonManager.PlayerStyle, Vector3> offsetDicWithCamera;
 
+    public Vector3 defaultCameraOffset = new Vector3(0, 2.0f, -4.0f);
     private void Awake()
     {
         offsetDicWithCamera = new Dictionary<PhotonManager.PlayerStyle, Vector3>();
