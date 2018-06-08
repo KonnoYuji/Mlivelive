@@ -20,10 +20,17 @@ public class PhotonManager : Photon.MonoBehaviour {
     }
 
     public Button ConPhotonButton;
-    public Button MakeRoomAndJoinButton;
-    public Button JoinRoomButton;
+    
+    public Button JoinVWorldButton;
+
+    public Button JoinVRoomButton;
+    
     public Button LeaveButton;
-    public GameObject playerSelection;
+
+    //public Button MakeRoomAndJoinButton;
+    //public Button JoinRoomButton;
+    //public GameObject playerSelection;
+
     public GameObject offset;
 
     public Text status;
@@ -37,8 +44,12 @@ public class PhotonManager : Photon.MonoBehaviour {
 
     private int playerNumOneFrameBefore = 0;
 
-    [SerializeField]
-    private GameObject mainChar, vipChar, audienceChar;
+    private string joinableVRoom;
+
+    private string joinableVWorld;
+
+    // [SerializeField]
+    // private GameObject mainChar, vipChar, audienceChar;
 
     [SerializeField]
     private bool isDebuged = false;
@@ -52,7 +63,6 @@ public class PhotonManager : Photon.MonoBehaviour {
     void Awake()
     {
         ConPhotonButton.onClick.AddListener(ConnectPhoton);
-        MakeRoomAndJoinButton.onClick.AddListener(CreateAndJoinRoom);
         LeaveButton.onClick.AddListener(LeaveRoom);
 
         PhotonNetwork.networkingPeer.QuickResendAttempts = 4;    
@@ -104,98 +114,38 @@ public class PhotonManager : Photon.MonoBehaviour {
         status.text = "Connected to Photon Cloud";
         Error.text = "ErrorMsg";
         ConPhotonButton.interactable = false;
-        MakeRoomAndJoinButton.interactable = true;
-    }
-
-    private void CreateAndJoinRoom()
-    {
-        string userName = "YujiKonno";
-        string userId = "001";
-        PhotonNetwork.autoCleanUpPlayerObjects = false;
-
-        //カスタムプロパティ
-        ExitGames.Client.Photon.Hashtable customProp = new ExitGames.Client.Photon.Hashtable();
-        customProp.Add("userName", userName); //ユーザ名
-        customProp.Add("userId", userId); //ユーザID
-        PhotonNetwork.SetPlayerCustomProperties(customProp);
-
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.CustomRoomProperties = customProp;
-
-        //ロビーで見えるルーム情報
-        roomOptions.CustomRoomPropertiesForLobby = new string[] { "userName", "userId" };
-        roomOptions.MaxPlayers = 5; //部屋の最大人数
-        roomOptions.IsOpen = true; //入室許可する
-        roomOptions.IsVisible = true; //ロビーから見えるようにする
-        //userIdが名前のルームがなければ作って入室、あれば普通に入室する。
-        PhotonNetwork.JoinOrCreateRoom(userId, roomOptions, null);
     }
 
     private void OnJoinedRoom()
     {
         Debug.Log("PhotonManager OnJoinedRoom!");        
-        MakeRoomAndJoinButton.interactable = false;
-        JoinRoomButton.interactable = false;
-        LeaveButton.interactable = true;
+        JoinVRoomButton.interactable = false;
+        JoinVWorldButton.interactable = false;
+        LeaveButton.interactable = true;     
 
-        playerSelection.SetActive(true);
-    }
-
-    public void InstantiateMyChar(int charNum)
-    {
-        Vector3 initialPosition = new Vector3(0.0f, 0.0f, 0.0f);
-        PlayerStyle myPlayerStyle;
-
-        switch (charNum)
-        {
-            case (int)PlayerStyle.Main:
-
-                myPlayerStyle = PlayerStyle.Main;
-                if(mainChar != null)
-                {
-                    myPlayer = PhotonNetwork.Instantiate(mainChar.name, InitialPosManager.Instance.MyCharOffset(myPlayerStyle), mainChar.transform.rotation, 0);
-                    initialPosition = myPlayer.transform.position;
-                    myPlayer.GetComponent<MainCharController>().isMyPlayer = true;
-                }               
-                break;
-
-            case (int)PlayerStyle.Vip:
-
-                myPlayerStyle = PlayerStyle.Vip;
-                if(vipChar != null)
-                {
-                    myPlayer = PhotonNetwork.Instantiate(vipChar.name, InitialPosManager.Instance.MyCharOffset(myPlayerStyle), vipChar.transform.rotation, 0);
-                    initialPosition = vipChar.transform.position;
-                    myPlayer.GetComponent<MainCharController>().isMyPlayer = true;
-                }        
-                break;
-
-            case (int)PlayerStyle.Audience:
-
-                myPlayerStyle = PlayerStyle.Audience;
-                if(audienceChar != null)
-                {
-                    myPlayer = PhotonNetwork.Instantiate(audienceChar.name, InitialPosManager.Instance.MyCharOffset(myPlayerStyle), audienceChar.transform.rotation, 0);
-                    initialPosition = audienceChar.transform.position;
-
-                }
-                break;
-        }
-
-
-        //Camera.main.transform.parent.transform.position = initialPosition + InitialPosManager.Instance.defaultCameraOffset;
-        Camera.main.transform.parent.transform.position = new Vector3(0.36f, -2.13f, 21.81f);;
-   
-        playerSelection.SetActive(false);
-
-
-        offset.SetActive(true);
-
+        StartCoroutine(InitializeCameraPosition());   
     }
     
+    private IEnumerator InitializeCameraPosition()
+    {
+        yield return null;
+        yield return null;
+        yield return null;
+
+        var controllers = FindObjectsOfType<VWorldCharController>();
+
+        for(int i=0; i<controllers.Length; i++)
+        {
+            if(controllers[i].name.Contains("unitychan"))
+            {
+                Camera.main.transform.parent.transform.position = controllers[i].transform.position + new Vector3(0, 0, -2.0f);
+                break;
+            }
+        }    
+        offset.SetActive(true);
+    }
     private void OnReceivedRoomListUpdate()
     {
-        //ルーム一覧を取る
         rooms= PhotonNetwork.GetRoomList();
 
         if (rooms.Length == 0)
@@ -207,23 +157,36 @@ public class PhotonManager : Photon.MonoBehaviour {
             //ルームが1件以上ある時ループでRoomInfo情報をログ出力
             for (int i = 0; i < rooms.Length; i++)
             {
-                Debug.Log("RoomName:" + rooms[i].Name);
-                Debug.Log("userName:" + rooms[i].CustomProperties["userName"]);
-                Debug.Log("userId:" + rooms[i].CustomProperties["userId"]);
-            }
-            JoinRoomButton.onClick.AddListener(JoinRoom);
-            JoinRoomButton.interactable = true;
+                if(rooms[i].Name.Contains("VRoom"))
+                {
+                    JoinVRoomButton.interactable = true;
+                    joinableVRoom = rooms[i].Name;
+                    JoinVRoomButton.onClick.AddListener(JoinVRoom);
+                }
+                else if(rooms[i].Name.Contains("VWorld"))
+                {
+                    JoinVWorldButton.interactable = true;
+                    joinableVWorld = rooms[i].Name;
+                    JoinVWorldButton.onClick.AddListener(JoinVWorld);                    
+                }                
+            }                                     
         }
     }
 
-    private void JoinRoom()
-    {
-        if(rooms.Length == 0)
+    private void JoinVRoom()
+    {        
+        if(!PhotonNetwork.JoinRoom(joinableVRoom))
         {
-            return;
-        }
+            Debug.Log("Failed to Join Room");            
+        }        
+    }
 
-        PhotonNetwork.JoinRoom(rooms[0].Name);
+    private void JoinVWorld()
+    {        
+        if(!PhotonNetwork.JoinRoom(joinableVWorld))
+        {
+            Debug.Log("Failed to Join Room");            
+        }        
     }
 
     private void LeaveRoom()
@@ -241,11 +204,6 @@ public class PhotonManager : Photon.MonoBehaviour {
         LeaveButton.interactable = false;
         DeletePhotonObi();
         playerNumOneFrameBefore = 0;
-
-        if (playerSelection.activeSelf)
-        {
-            playerSelection.SetActive(false);
-        }
      
         if (offset.activeSelf)
         {
@@ -256,11 +214,7 @@ public class PhotonManager : Photon.MonoBehaviour {
     private void OnPhotonJoinRoomFailed()
     {
         Debug.Log("PhotonManager: ルーム入室に失敗");
-    }
 
-    private void OnPhotonCreateRoomFailed()
-    {
-        Debug.Log("PhotonManager: ルーム作成に失敗");
     }
 
     private void OnFailedToConnectToPhoton(DisconnectCause cause)
@@ -283,20 +237,9 @@ public class PhotonManager : Photon.MonoBehaviour {
             leaveEvent();
         }
 
-        if(MakeRoomAndJoinButton.interactable)
-        {
-            MakeRoomAndJoinButton.interactable = false;
-        }
+        JoinVRoomButton.interactable = false;
 
-        if(JoinRoomButton.interactable)
-        {
-            JoinRoomButton.interactable = false;
-        }
-
-        if (playerSelection.activeSelf)
-        {
-            playerSelection.SetActive(false);
-        }
+        JoinVWorldButton.interactable = false;        
    
         if(offset.activeSelf)
         {
@@ -323,7 +266,7 @@ public class PhotonManager : Photon.MonoBehaviour {
 
     private void RemoveConFailedClient()
     {
-        var charControllers = FindObjectsOfType<MainCharController>();
+        var charControllers = FindObjectsOfType<BaseVCharacter>();
 
         if(charControllers == null || charControllers.Length == 0)
         {

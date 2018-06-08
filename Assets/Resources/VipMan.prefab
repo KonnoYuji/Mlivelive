@@ -128,7 +128,6 @@ GameObject:
   - component: {fileID: 114002674171308804}
   - component: {fileID: 114646735409494838}
   - component: {fileID: 114493389813384676}
-  - component: {fileID: 114492772017880312}
   - component: {fileID: 82316954765564274}
   - component: {fileID: 114397409415166678}
   - component: {fileID: 114018511331465016}
@@ -877,7 +876,7 @@ Transform:
   m_GameObject: {fileID: 1159078357094738}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.67, y: -3.531, z: 21.81}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
   - {fileID: 4628952918415476}
   - {fileID: 4163336152920304}
@@ -1334,18 +1333,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc001952a941c2743a3739a35bf9c162, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114492772017880312
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1159078357094738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4931dee7442a979488d3d081badbc92a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  settedOffset: 0
 --- !u!114 &114493389813384676
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1360,6 +1347,7 @@ MonoBehaviour:
   myAnim: {fileID: 95142371663230998}
   myView: {fileID: 114002674171308804}
   offRenderingParts: []
+  isMyPlayer: 0
 --- !u!114 &114646735409494838
 MonoBehaviour:
   m_ObjectHideFlags: 1
